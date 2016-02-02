@@ -1,0 +1,43 @@
+{% extends 'blog_app/base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+        <h2>Blog edit</h2>
+        <form id="edit_form">
+        {% csrf_token %}
+        <label>title : </label>
+        <input type="text" id="title" ><br />
+        <label>post : </label>
+        <textarea id ="post"  rows="16" cols="120"  name="comment" form="usrform" ></textarea>
+        <br />
+        <input type="submit" class="btn btn-primary btn-lg" value="SUBMIT">
+
+        </form>
+        <a href="/blog_app/">return home page</a><br /><br />
+        <script>
+        var title="{{ blog.title }}";
+        var story="{{ blog.story }}";
+        document.getElementById("title").value=title;
+        document.getElementById("post").value=story;
+            $(document).on('submit','#edit_form',function(e){
+
+                var new_slug="{{ blog.slug }}";
+                var new_url='/blog_app/blog_edit/'+new_slug+'/';
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    url:new_url,
+                    data:{
+                        title:$('#title').val(),
+                        post:$('#post').val(),
+                        csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+
+                    },
+                    success: function(data){
+                        location.href = "/blog_app/";
+              
+                    }
+            });
+        });
+    </script>
+{% endblock %}

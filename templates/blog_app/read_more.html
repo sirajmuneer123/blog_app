@@ -1,0 +1,56 @@
+{% extends 'blog_app/base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+        <br />
+        <h2 style="text-transform: uppercase;">{{ blog_title }}</h2>
+        <br /><br />
+        <p>{{ blog.story }}</p>
+        <h3>Comments</h3>
+        <ul id="list">
+        {% if comments %}
+        {% for c in comments %}
+        <li>{{ c.comment }}</li>
+        {% endfor %}
+        {% endif %}
+        </ul>
+        <form id="add_form">
+        {% csrf_token %}
+        <label>comment : </label>
+        <input type="text" id="comment" placeholder="comment....">
+        <input id="ok" type="submit" value="SUBMIT">
+        
+        </form>
+        <a href="/blog_app/">return home</a>
+        <br /><br /><br />
+        <script>
+            
+            $(document).on('submit','#add_form',function(e){
+                var user_name="{{ user.username }}";
+
+                var new_slug="{{ blog.slug }}";
+                var new_url='/blog_app/read_more/'+new_slug+'/';
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    url:new_url,
+                    data:{
+                        comment: user_name + " : " + $('#comment').val(),
+                        csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+
+                    },
+                    success: function(data){
+                        data = JSON.parse(data);
+                        var list=data.json;
+                        var y = document.createElement("LI");
+                        var t = document.createTextNode(list[list.length-1]);
+                        y.appendChild(t);
+                        document.getElementById("list").appendChild(y);
+                        document.getElementById("comment").value = ""; 
+              
+                    }
+            });
+
+        });
+        </script>
+{% endblock %}

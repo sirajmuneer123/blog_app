@@ -1,0 +1,26 @@
+{% extends 'blog_app/base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+        <h2>Add Blog</h2>
+        <form id="blog_form" method="post" action="/blog_app/add_blog/">
+
+            {% csrf_token %}
+     
+
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+                <br /><br />
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Create Blog" />
+        </form>
+        <script>
+        $('#button').click(function(){
+            alert('buttton');
+
+        });
+        </script>
+{% endblock %}

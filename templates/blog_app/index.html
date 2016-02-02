@@ -1,0 +1,22 @@
+{% extends 'blog_app/base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+        {% if blog_data %}
+        {% for data in blog_data %}
+        <div class="jumbotron">
+        <div class="container" style="background-repeat: repeat-x;">
+
+        <a href="/blog_app/read_more/{{ data.slug }}"><h3>{{ data.title }}</h3></a>
+        <h5 id="{{ data.slug }}">{{ data.story|truncatechars:400 }}</h5>
+        <a id="margin" class="btn btn-primary btn-lg" href="/blog_app/read_more/{{ data.slug }}" role="button" >Learn more</a>
+		{% if user.is_authenticated %}
+		    <td><a href='/blog_app/delete_post/{{ data.id }}' class="btn btn-primary btn-lg" role="button" /> Delete</a></td>
+            <td><a href='/blog_app/blog_edit/{{ data.slug }}' class="btn btn-primary btn-lg" role="button" /> Edit</a></td>
+		{% endif %}
+    	</div></div>
+        {% endfor %}
+        {% else %}
+        <p>no blogs</p>
+        {% endif %}
+{% endblock %}

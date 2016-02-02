@@ -1,0 +1,24 @@
+{% extends 'blog_app/base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+
+        <h1>Register with BLog app</h1>
+
+        {% if registered %}
+        Rango says: <strong>thank you for registering!</strong>
+        <a href="/blog_app/">Return to the homepage.</a><br />
+        {% else %}
+        BSlog app says: <strong>register here!</strong><br />
+        <form id="user_form" method="post" action="/blog_app/register/"
+                enctype="multipart/form-data">
+                <td>
+            {% csrf_token %}
+            {{ user_form.as_ul }}
+            {{ profile_form.as_ul }}
+            <br />
+            <input type="submit" name="submit" value="Register" class="btn btn-primary" />
+        </td>
+        </form>
+        {% endif %}
+{% endblock %}
